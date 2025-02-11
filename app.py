@@ -18,6 +18,9 @@ secrets = get_secret()
 APP_ID = secrets["APP_ID"]
 APP_KEY = secrets["APP_KEY"]
 
+# TfL API Base URL
+BASE_URL = "https://api.tfl.gov.uk"
+
 app = FastAPI()
 
 def search_stop_point(query):
