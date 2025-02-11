@@ -1,12 +1,22 @@
-from fastapi import FastAPI
+import boto3
+import json
 import requests
+from fastapi import FastAPI
 
-# TfL API Base URL
-BASE_URL = "https://api.tfl.gov.uk"
+# AWS Secrets Manager setup
+def get_secret():
+    secret_name = "tfl-api-secrets"
+    region_name = "eu-west-2"
 
-# Optional: Add your App ID and Key if required
-APP_ID = "xxx"
-APP_KEY = "xxx"
+    client = boto3.client("secretsmanager", region_name=region_name)
+    response = client.get_secret_value(SecretId=secret_name)
+
+    return json.loads(response["SecretString"])
+
+# Retrieve secrets
+secrets = get_secret()
+APP_ID = secrets["APP_ID"]
+APP_KEY = secrets["APP_KEY"]
 
 app = FastAPI()
 
